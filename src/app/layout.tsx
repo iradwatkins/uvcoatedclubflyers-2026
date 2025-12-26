@@ -1,8 +1,11 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
 
 export const metadata: Metadata = {
-  title: 'UV Coated Club Flyers - Premium Glossy Flyers',
-  description: 'High-shine UV coated flyers for nightclubs, events, and promotions. Premium finish that stands out.',
+  title: 'UV Coated Club Flyers - Premium Flyer Printing',
+  description: 'Premium UV coated flyer printing services',
 }
 
 export default function RootLayout({
@@ -12,6 +15,24 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
+      </head>
       <body style={{ margin: 0, fontFamily: 'system-ui, -apple-system, sans-serif' }}>
         {children}
       </body>
